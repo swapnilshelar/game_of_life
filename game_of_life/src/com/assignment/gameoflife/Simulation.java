@@ -1,5 +1,5 @@
 package com.assignment.gameoflife;
-import java.util.InputMismatchException;
+
 import java.util.Scanner;
 
 public class Simulation {
@@ -65,7 +65,7 @@ public class Simulation {
 		int count = 0;
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				count += isOutOfBound(row + i, col + j);
+				count += getState(row + i, col + j);
 			}
 		}
 
@@ -77,16 +77,16 @@ public class Simulation {
 
 	// Checking whether index passed is not out of bound
 	// If index is less than 0 or greater than equal to size it will return zero
-	// If it is OK then return given cell at it is
 	// It will help while counting alive neighbors
 
-	public int isOutOfBound(int row, int col) {
+	public int getState(int row, int col) {
 		if (row < 0 || row >= rowSize) {
 			return 0;
 		}
 		if (col < 0 || col >= colSize) {
 			return 0;
 		}
+		// If it is OK then return given cell at it is
 		return this.matrix[row][col];
 	}
 
@@ -120,72 +120,6 @@ public class Simulation {
 			}
 		}
 		this.matrix = newMatrix;
-	}
-
-	public static void main(String[] args) {
-		try {
-			boolean flag = true;
-			Scanner sc = new Scanner(System.in);
-
-			// Enter size of two-dimensional orthogonal grid
-
-			System.out.println("Enter the size of row and column ");
-			int rowSize = sc.nextInt();
-			int colSize = sc.nextInt();
-			Simulation grid = new Simulation(rowSize, colSize);
-
-			// Enter number of live cells you want in grid
-
-			System.out.println("Enter number of live cells you want in grid");
-			int num = sc.nextInt();
-
-			// Enter positions of live cell one by one
-
-			System.out.println("Enter the indices for each live cell ");
-			for (int i = 1; i <= num; i++) {
-				int rowInd = sc.nextInt();
-				int colInd = sc.nextInt();
-				grid.liveCell(rowInd, colInd);
-			}
-
-			// Display current generation
-
-			System.out.println("Current generation is here ");
-			grid.printMatrix();
-
-			// Display future generations
-
-			while (flag) {
-				// Choose whether to see future generation
-				System.out.println("Do you want to see future generation if yes press 1 otherwise press 0");
-				int pressNum = sc.nextInt();
-				if (pressNum == 1) {
-					grid.reshufflingOfCells();
-					grid.printMatrix();
-					flag = true;
-					System.out.println("_______________________________");
-				} else {
-					flag = false;
-				}
-			}
-
-			// Display current status of individual cell
-
-			System.out.println("Enter the indices of cell to get current status ");
-			int rowInd = sc.nextInt();
-			int colInd = sc.nextInt();
-			grid.currentStateOfCell(rowInd, colInd);
-
-			// Handling Exceptions and giving proper message to user
-
-		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println(e.getMessage() + " , please enter valid index");
-		} catch (InputMismatchException e) {
-			System.out.println("Please enter valid input");
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
 	}
 
 }
