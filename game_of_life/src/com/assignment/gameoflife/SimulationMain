@@ -1,0 +1,102 @@
+package com.assignment.gameoflife;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class SimulationMain extends Simulation {
+
+	SimulationMain(int rowSize, int colSize) {
+		super(rowSize, colSize);
+	}
+
+	public static void main(String[] args) {
+		try {
+			boolean flag = true;
+			boolean restartFlag = true;
+			Scanner sc = new Scanner(System.in);
+
+			while (restartFlag) {
+
+				// Welcome note
+
+				System.out.println("Welcome you in Game Of Life");
+
+				// Enter size of two-dimensional orthogonal grid
+
+				System.out.println("Please enter the size of row and column ");
+				int rowSize = sc.nextInt();
+				int colSize = sc.nextInt();
+				Simulation grid = new SimulationMain(rowSize, colSize);
+
+				// Enter number of live cells you want in grid
+
+				System.out.println("Enter number of live cells you want in grid");
+				int num = sc.nextInt();
+
+				// Enter positions of live cell one by one
+				if (num > 0) {
+					System.out.println("Enter the indices for each live cell ");
+					for (int i = 1; i <= num; i++) {
+						int rowInd = sc.nextInt();
+						int colInd = sc.nextInt();
+						grid.liveCell(rowInd, colInd);
+					}
+				}
+				// Display current generation
+
+				System.out.println("Current generation is here ");
+				grid.printMatrix();
+
+				// Display future generations
+
+				while (flag) {
+					// Choose whether to see future generation
+					System.out.println("Do you want to see future generation if yes press 1 otherwise press 0");
+					int pressNum = sc.nextInt();
+					if (pressNum == 1) {
+						grid.reshufflingOfCells();
+						grid.printMatrix();
+						flag = true;
+						System.out.println("_______________________________");
+					} else if (pressNum == 0) {
+						flag = false;
+					} else {
+						System.out.println("Invalid input...");
+					}
+				}
+
+				// Display current status of individual cell
+
+				System.out.println("Enter the indices of cell to get current status ");
+				int rowInd = sc.nextInt();
+				int colInd = sc.nextInt();
+				grid.currentStateOfCell(rowInd, colInd);
+
+				// restart or end the game
+
+				System.out.println("If you want to restart the game then enter 1 or to end the game enter 0");
+				int restartNum = sc.nextInt();
+				if (restartNum == 1) {
+					System.out.println("Game Will restart...");
+				} else {
+					// Ending note
+					System.out.println("Game End!");
+					System.out.println("Thanks!");
+					restartFlag = false;
+				}
+			}
+
+			// Handling Exceptions and giving proper message to user
+
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println(e.getMessage() + " , please enter valid index");
+		} catch (InputMismatchException e) {
+			System.out.println("Please enter valid input");
+			System.out.println(e.getMessage());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+	}
+
+}
